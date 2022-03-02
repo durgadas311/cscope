@@ -78,6 +78,7 @@ INVCONTROL invcontrol;		/* inverted file control structure */
 static char *newinvname;	/* new inverted index file name */
 static char *newinvpost;	/* new inverted index postings file name */
 static long traileroffset;	/* file trailer offset */
+static int dummy;
 
 
 /* Internal prototypes: */
@@ -258,7 +259,7 @@ build(void)
 		    break;
 		case 'q':	/* quick search */
 		    oldinvertedindex = YES;
-		    fscanf(oldrefs, "%ld", &totalterms);
+		    dummy = fscanf(oldrefs, "%ld", &totalterms);
 		    break;
 		case 'T':	/* truncate symbols to 8 characters */
 		    oldtruncate = YES;

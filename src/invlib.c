@@ -62,6 +62,7 @@
  * useless, that looks */
 int	invbreak;
 #endif
+static int dummy;
 
 static	int	boolready(void);
 static	int	invnewterm(void);
@@ -655,7 +656,7 @@ invopen(INVCONTROL *invcntl, char *invname, char *invpost, int stat)
 	}
 	if (read_index) {
 		fseek(invcntl->invfile, invcntl->param.startbyte, SEEK_SET);
-		fread(invcntl->iindex, (int) invcntl->param.supsize, 1,
+		dummy = fread(invcntl->iindex, (int) invcntl->param.supsize, 1,
 		      invcntl->invfile);
 	}
 	invcntl->numblk = -1;
@@ -719,7 +720,7 @@ invstep(INVCONTROL *invcntl)
 	fseek(invcntl->invfile,
 	      invcntl->numblk*invcntl->param.sizeblk + invcntl->param.cntlsize,
 	      SEEK_SET);
-	fread(invcntl->logblk, (int) invcntl->param.sizeblk, 1,
+	dummy = fread(invcntl->logblk, (int) invcntl->param.sizeblk, 1,
 	      invcntl->invfile); 
 	invcntl->keypnt = 0; 
 }
@@ -796,7 +797,7 @@ invfind(INVCONTROL *invcntl, char *searchterm) /* term being searched for  */
 		      (imid*invcntl->param.sizeblk) + invcntl->param.cntlsize,
 		      SEEK_SET);
 		invcntl->numblk = imid;
-		fread(invcntl->logblk, (int)invcntl->param.sizeblk, 1,
+		dummy = fread(invcntl->logblk, (int)invcntl->param.sizeblk, 1,
 		      invcntl->invfile);
 	}
 
@@ -993,7 +994,7 @@ boolfile(INVCONTROL *invcntl, long *num, int boolarg)
 	}
 	file = invcntl->postfile;
 	fseek(file, *ptr2, SEEK_SET);
-	fread(&posting, sizeof(posting), 1, file);
+	dummy = fread(&posting, sizeof(posting), 1, file);
 	newsetc = 0;
 	switch (boolarg) {
 	case BOOL_OR:
@@ -1008,7 +1009,7 @@ boolfile(INVCONTROL *invcntl, long *num, int boolarg)
 			}
 			else if (set1p->lineoffset > posting.lineoffset) {
 				*newsetp++ = posting;
-				fread(&posting, (int) sizeof(posting), 1, file);
+				dummy = fread(&posting, (int) sizeof(posting), 1, file);
 				set2c++;
 			}
 			else if (set1p->type < posting.type) {
@@ -1017,13 +1018,13 @@ boolfile(INVCONTROL *invcntl, long *num, int boolarg)
 			}
 			else if (set1p->type > posting.type) {
 				*newsetp++ = posting;
-				fread(&posting, (int) sizeof(posting), 1, file);
+				dummy = fread(&posting, (int) sizeof(posting), 1, file);
 				set2c++;
 			}
 			else {	/* identical postings */
 				*newsetp++ = *set1p++;
 				set1c++;
-				fread(&posting, (int) sizeof(posting), 1, file);
+				dummy = fread(&posting, (int) sizeof(posting), 1, file);
 				set2c++;
 			}
 		}
@@ -1037,7 +1038,7 @@ boolfile(INVCONTROL *invcntl, long *num, int boolarg)
 			while (set2c++ < *num) {
 				*newsetp++ = posting;
 				newsetc++;
-				fread(&posting, (int) sizeof(posting), 1, file);
+				dummy = fread(&posting, (int) sizeof(posting), 1, file);
 			}
 		}
 		item = newitem;

@@ -112,6 +112,7 @@ char	*tmpdir;		/* temporary directory */
 
 static	BOOL	onesearch;		/* one search only in line mode */
 static	char	*reflines;		/* symbol reference lines file */
+static  int     dummy;
 
 /* Internal prototypes: */
 static  void    error_usage(void);
@@ -520,8 +521,10 @@ cscope: Could not create private temp dir %s\n",
     }
     umask(orig_umask);
 
-    snprintf(temp1, sizeof(temp1), "%s/cscope.1", tempdirpv);
-    snprintf(temp2, sizeof(temp2), "%s/cscope.2", tempdirpv);
+    dummy = snprintf(temp1, sizeof(temp1), "%s/cscope.1", tempdirpv);
+    if (dummy < 0) abort(); /* silence warning - should never happen */
+    dummy = snprintf(temp2, sizeof(temp2), "%s/cscope.2", tempdirpv);
+    if (dummy < 0) abort(); /* silence warning - should never happen */
 
     /* if running in the foreground */
     if (signal(SIGINT, SIG_IGN) != SIG_IGN) {
@@ -620,7 +623,7 @@ cscope: Could not create private temp dir %s\n",
 		    break;
 		case 'q':	/* quick search */
 		    invertedindex = YES;
-		    fscanf(oldrefs, "%ld", &totalterms);
+		    dummy = fscanf(oldrefs, "%ld", &totalterms);
 		    break;
 		case 'T':	/* truncate symbols to 8 characters */
 		    dbtruncated = YES;
@@ -678,7 +681,7 @@ cscope: cannot read source file names from file %s\n", reffile);
 		    i = path[1];
 		    s = path + 2;		/* for "-Ipath" */
 		    if (*s == '\0') {	/* if "-I path" */
-			fgets(path, sizeof(path), names);
+			s = fgets(path, sizeof(path), names);
 			s = path;
 		    }
 		    switch (i) {
