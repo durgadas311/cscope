@@ -9,4 +9,9 @@ New options:
     select the first ten results (digits as first char of search criteria
     require escape).
 
+**-x**
+-   Interpret files in -i namefile exactly, do not scan for options.
+    Allows blanks or other chars in file names without causing problems later.
+    Each line in 'namefile' is taken as a complete file/path.
+
 See also [original sourceforge README](/README)

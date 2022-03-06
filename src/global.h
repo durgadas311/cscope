@@ -262,6 +262,7 @@ extern	BOOL	*change;	/* change this line */
 extern	BOOL	changing;	/* changing text */
 extern	int	selecting;
 extern	int	legacy;
+extern	BOOL	literal_filenames;
 extern	unsigned int curdispline;
 extern	char	newpat[];	/* new pattern */
 extern	char	Pattern[];	/* symbol or text pattern */

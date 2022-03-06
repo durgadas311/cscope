@@ -192,6 +192,13 @@ database building and searches.
 .B -X
 Remove the cscope reference file and inverted indexes when exiting
 .TP
+.B -x
+Interpret lines in
+.BI -i namefile
+literally (exactly) as file paths.
+This avoids issues with special characters such as spaces, but does not
+allow for options in the file.
+.TP
 .B -z
 Use legacy cscope behavior, where cursor stays in search panel
 after displaying results and digits in search panel select the first

@@ -154,7 +154,7 @@ char ** parse_options(int *argc, char **argv)
 	
 
 	while ((opt = getopt_long(argcc, argv,
-	       "hVbcCdeF:f:I:i:kLl0:1:2:3:4:5:6:7:8:9:P:p:qRs:TUuvXz",
+	       "hVbcCdeF:f:I:i:kLl0:1:2:3:4:5:6:7:8:9:P:p:qRs:TUuvXxz",
 	       lopts, &longind)) != -1) {
 		switch(opt) {
 
@@ -273,6 +273,9 @@ char ** parse_options(int *argc, char **argv)
 			break;
 		case 's':	/* additional source file directory */
 			sourcedir(optarg);
+			break;
+		case 'x':
+			++literal_filenames;
 			break;
 		case 'z':
 			legacy = 1;
@@ -1052,6 +1055,7 @@ longusage(void)
 -u            Unconditionally build the cross-reference file.\n\
 -v            Be more verbose in line mode.\n\
 -V            Print the version number.\n\
+-x            Literal (exact) filenames (no options allowed) in -i.\n\
 -z            Legacy behavior for search panel.\n\
 \n\
 Please see the manpage for more information.\n",

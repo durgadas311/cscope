@@ -60,6 +60,7 @@ unsigned long nincdirs;		/* number of #include directories */
 unsigned long nsrcdirs;		/* number of source directories */
 unsigned long nsrcfiles;	/* number of source files */
 unsigned long msrcfiles = SRCINC;	/* maximum number of source files */
+BOOL    literal_filenames = 0;
 
 static	char	**incnames;	/* #include directory names without view pathing */
 static	unsigned long mincdirs = DIRINC; /* maximum number of #include directories */
@@ -325,6 +326,15 @@ makefilelist(void)
 	/* Kill away \n left at end of fgets()'d string: */
 	if (*point_in_line == '\n')
 	    *point_in_line = '\0';
+	if (literal_filenames) {
+		if ((s = inviewpath(line)) != NULL) {
+			addsrcfile(s);
+		} else {
+			(void) fprintf(stderr, "cscope: cannot find file %s\n",
+									line);
+			errorsfound = YES;
+		}
+	} else {
 			
 	/* Parse whitespace-terminated strings in line: */
 	point_in_line = line;
@@ -465,6 +475,7 @@ cscope: Syntax error in namelist file %s: unfinished -I or -p option\n",
 	    while (isspace((unsigned char) *point_in_line))
 		point_in_line ++;
 	} /* while(sscanf(line)) */
+	} /* end if-literal-filenames (else) */
     } /* while(fgets(line)) */
 
     if (names == stdin)
