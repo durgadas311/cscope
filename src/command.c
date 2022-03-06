@@ -48,6 +48,7 @@
 #include <ctype.h>
 
 int	selecting;
+int	legacy = 0;
 unsigned int   curdispline = 0;
 
 BOOL	caseless;		/* ignore letter case when searching */
@@ -495,7 +496,7 @@ cscope: cannot open pipe to shell command: %s\n", newpat);
 	atfield();	/* move back to the input field */
 	/* FALLTHROUGH */
     default:
-	if (selecting && !mouse) {
+	if ((selecting || (legacy && isdigit(commandc))) && !mouse) {
 	    char *c;
 
 	    if ((c = strchr(dispchars, commandc)))
@@ -521,7 +522,7 @@ cscope: cannot open pipe to shell command: %s\n", newpat);
 		/* search for the pattern */
 		if (search() == YES) {
 		    curdispline = 0;
-		    ++selecting;
+		    selecting = legacy ? 0 : 1;
 
 		    switch (field) {
 		    case DEFINITION:

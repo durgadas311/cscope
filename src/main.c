@@ -154,7 +154,7 @@ char ** parse_options(int *argc, char **argv)
 	
 
 	while ((opt = getopt_long(argcc, argv,
-	       "hVbcCdeF:f:I:i:kLl0:1:2:3:4:5:6:7:8:9:P:p:qRs:TUuvX",
+	       "hVbcCdeF:f:I:i:kLl0:1:2:3:4:5:6:7:8:9:P:p:qRs:TUuvXz",
 	       lopts, &longind)) != -1) {
 		switch(opt) {
 
@@ -273,6 +273,9 @@ char ** parse_options(int *argc, char **argv)
 			break;
 		case 's':	/* additional source file directory */
 			sourcedir(optarg);
+			break;
+		case 'z':
+			legacy = 1;
 			break;
 		}
 	}
@@ -1007,7 +1010,7 @@ error_usage(void)
 static void
 usage(void)
 {
-	fprintf(stderr, "Usage: cscope [-bcCdehklLqRTuUvV] [-f file] [-F file] [-i file] [-I dir] [-s dir]\n");
+	fprintf(stderr, "Usage: cscope [-bcCdehklLqRTuUvVz] [-f file] [-F file] [-i file] [-I dir] [-s dir]\n");
 	fprintf(stderr, "              [-p number] [-P path] [-[0-8] pattern] [source files]\n");
 }
 
@@ -1049,6 +1052,7 @@ longusage(void)
 -u            Unconditionally build the cross-reference file.\n\
 -v            Be more verbose in line mode.\n\
 -V            Print the version number.\n\
+-z            Legacy behavior for search panel.\n\
 \n\
 Please see the manpage for more information.\n",
 	      stderr);

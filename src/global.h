@@ -261,6 +261,7 @@ extern	BOOL	caseless;	/* ignore letter case when searching */
 extern	BOOL	*change;	/* change this line */
 extern	BOOL	changing;	/* changing text */
 extern	int	selecting;
+extern	int	legacy;
 extern	unsigned int curdispline;
 extern	char	newpat[];	/* new pattern */
 extern	char	Pattern[];	/* symbol or text pattern */
