@@ -154,7 +154,7 @@ char ** parse_options(int *argc, char **argv)
 	
 
 	while ((opt = getopt_long(argcc, argv,
-	       "hVbcCdeF:f:I:i:kLl0:1:2:3:4:5:6:7:8:9:P:p:qRs:TUuvXxz",
+	       "hVbcCdeF:f:H:I:i:kLl0:1:2:3:4:5:6:7:8:9:P:p:qRs:TUuvXxz",
 	       lopts, &longind)) != -1) {
 		switch(opt) {
 
@@ -279,6 +279,10 @@ char ** parse_options(int *argc, char **argv)
 			break;
 		case 'z':
 			legacy = 1;
+			break;
+		case 'H':
+			history_file = optarg;
+			loadhistory(history_file);
 			break;
 		}
 	}
@@ -1014,7 +1018,7 @@ static void
 usage(void)
 {
 	fprintf(stderr, "Usage: cscope [-bcCdehklLqRTuUvVz] [-f file] [-F file] [-i file] [-I dir] [-s dir]\n");
-	fprintf(stderr, "              [-p number] [-P path] [-[0-8] pattern] [source files]\n");
+	fprintf(stderr, "              [-H file] [-p number] [-P path] [-[0-8] pattern] [source files]\n");
 }
 
 
@@ -1035,6 +1039,7 @@ longusage(void)
 		REFFILE);
 	fprintf(stderr, "\
 -h            This help screen.\n\
+-H file       Save/preload history in file.\n\
 -I incdir     Look in incdir for any #include files.\n\
 -i namefile   Browse through files listed in namefile, instead of %s\n",
 		NAMEFILE);
@@ -1085,6 +1090,9 @@ myexit(int sig)
 	/* dump core for debugging on the quit signal */
 	if (sig == SIGQUIT) {
 		abort();
+	}
+	if (history_file != NULL) {
+		savehistory(history_file);
 	}
 	/* HBB 20000421: be nice: free allocated data */
 	freefilelist();

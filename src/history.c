@@ -35,9 +35,13 @@
  *	command history
  */
 
+#include <sys/file.h>
 #include "global.h"
 
 #include "alloc.h"
+
+char *history_file = NULL;
+int history_limit = 100;
 
 static	struct cmd *tail, *current;
 
@@ -100,4 +104,46 @@ struct cmd *
 currentcmd(void)
 {
 	return current;
+}
+
+void
+savehistory(char *file)
+{
+	int x;
+	struct cmd *c;
+	FILE *fp = fopen(file, "w");
+	if (fp != NULL) {
+		/* how best to handle collisions? at least this prevents corruption */
+		flock(fileno(fp), LOCK_EX);
+		/* need to save in true order, but don't have 'head' */
+		/* besides, need to enforce a limit i.e. "last N commands" */
+		x = history_limit;
+		for (c = tail; x > 0 && c != NULL && c->prev != NULL; c = c->prev) --x;
+		for (; c != NULL; c = c->next) {
+			fprintf(fp, "%d %s\n", c->field, c->text);
+		}
+		fclose(fp); /* flock(fileno(fp), LOCK_UN); */
+	}
+}
+
+void
+loadhistory(char *file)
+{
+	int x;
+	char *e;
+	char buf[PATLEN + 8]; /* +8 > pat field# + whitespace + NUL */
+	FILE *fp = fopen(file, "r");
+	if (fp != NULL) {
+		while (fgets(buf, sizeof(buf), fp) != NULL) {
+			buf[sizeof(buf) - 1] = '\0';
+			x = strlen(buf) - 1;
+			while (x >= 0 && buf[x] == '\n') buf[x--] = '\0';
+			int f = strtoul(buf, &e, 0);
+			while (isspace(*e)) ++e;
+			if (*e != '\0') {
+				addcmd(f, e);
+			}
+		}
+		fclose(fp);
+	}
 }

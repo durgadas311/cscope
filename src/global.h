@@ -263,6 +263,8 @@ extern	BOOL	changing;	/* changing text */
 extern	int	selecting;
 extern	int	legacy;
 extern	BOOL	literal_filenames;
+extern  char    *history_file;
+extern  int     history_limit;
 extern	unsigned int curdispline;
 extern	char	newpat[];	/* new pattern */
 extern	char	Pattern[];	/* symbol or text pattern */
@@ -373,6 +375,7 @@ void	help(void);
 void	incfile(char *file, char *type);
 void    includedir(char *_dirname);
 void    initsymtab(void);
+void    loadhistory(char *file);
 void	makefilelist(void);
 void	mousecleanup(void);
 void	mousemenu(void);
@@ -390,6 +393,7 @@ void	postfatal(const char *msg,...);
 void	putposting(char *term, int type);
 void	fetch_string_from_dbase(char *, size_t);
 void	resetcmd(void);
+void    savehistory(char *file);
 void	seekline(unsigned int line);
 void	setfield(void);
 void	shellpath(char *out, int limit, char *in);

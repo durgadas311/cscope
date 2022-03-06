@@ -14,4 +14,7 @@ New options:
     Allows blanks or other chars in file names without causing problems later.
     Each line in 'namefile' is taken as a complete file/path.
 
+**-H file**
+-   Use file to load and save cscope history. Limited to 100 lines (history items).
+
 See also [original sourceforge README](/README)
