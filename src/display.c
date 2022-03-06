@@ -78,6 +78,7 @@ long	searchcount;		/* count of files searched */
 int	subsystemlen;		/* OGS subsystem name display field length */
 unsigned int totallines;	/* total reference lines */
 unsigned fldcolumn;		/* input field column */
+char    *showname = NULL;	/* title to show on screens */
 
 const char	dispchars[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -169,10 +170,18 @@ display(void)
 #endif
 	move(0, COLS - (int) sizeof(helpstring));
 	addstr(helpstring);
+	if (showname) {
+		move(0, (COLS - strlen(showname))/2);
+		addstr(showname);
+	}
     } else if (totallines == 0) {
 	/* if no references were found */
 	/* redisplay the last message */
 	addstr(lastmsg);
+	if (showname) {
+		move(0, COLS - strlen(showname) - 1);
+		printw(" %s", showname);
+	}
     } else {
 	/* display the pattern */
 	if (changing == YES) {
@@ -180,6 +189,10 @@ display(void)
 	} else {
 	    printw("%c%s: %s", toupper((unsigned char)fields[field].text2[0]),
 		   fields[field].text2 + 1, Pattern);
+	}
+	if (showname) {
+		move(0, COLS - strlen(showname) - 1);
+		printw(" %s", showname);
 	}
 	/* display the column headings */
 	move(2, 2);

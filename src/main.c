@@ -154,7 +154,7 @@ char ** parse_options(int *argc, char **argv)
 	
 
 	while ((opt = getopt_long(argcc, argv,
-	       "hVbcCdeF:f:H:I:i:kLl0:1:2:3:4:5:6:7:8:9:P:p:qRs:TUuvXxz",
+	       "hVbcCdeF:f:H:I:i:kLl0:1:2:3:4:5:6:7:8:9:N:P:p:qRs:TUuvXxz",
 	       lopts, &longind)) != -1) {
 		switch(opt) {
 
@@ -283,6 +283,9 @@ char ** parse_options(int *argc, char **argv)
 		case 'H':
 			history_file = optarg;
 			loadhistory(history_file);
+			break;
+		case 'N':
+			showname = optarg;
 			break;
 		}
 	}
@@ -1018,7 +1021,7 @@ static void
 usage(void)
 {
 	fprintf(stderr, "Usage: cscope [-bcCdehklLqRTuUvVz] [-f file] [-F file] [-i file] [-I dir] [-s dir]\n");
-	fprintf(stderr, "              [-H file] [-p number] [-P path] [-[0-8] pattern] [source files]\n");
+	fprintf(stderr, "       [-H file] [-N title] [-p number] [-P path] [-[0-8] pattern] [source files]\n");
 }
 
 
@@ -1050,6 +1053,7 @@ longusage(void)
 -L            Do a single search with line-oriented output.\n\
 -l            Line-oriented interface.\n\
 -num pattern  Go to input field num (counting from 0) and find pattern.\n\
+-N title      Display (short) title on top line.\n\
 -P path       Prepend path to relative file names in pre-built cross-ref file.\n\
 -p n          Display the last n file path components.\n\
 -q            Build an inverted index for quick symbol searching.\n\

@@ -265,6 +265,7 @@ extern	int	legacy;
 extern	BOOL	literal_filenames;
 extern  char    *history_file;
 extern  int     history_limit;
+extern  char    *showname;
 extern	unsigned int curdispline;
 extern	char	newpat[];	/* new pattern */
 extern	char	Pattern[];	/* symbol or text pattern */

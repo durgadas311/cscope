@@ -17,4 +17,8 @@ New options:
 **-H file**
 -   Use file to load and save cscope history. Limited to 100 lines (history items).
 
+**-N title**
+-   Display title on screen, to differentiate windows using different cscope databases.
+    In rare cases, may obscure part of status string.
+
 See also [original sourceforge README](/README)
